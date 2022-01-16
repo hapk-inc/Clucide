@@ -103,10 +103,18 @@ enum RoundStatus {
   studentAnswered,
   teacherStudent,
   teacherStudentAnswered,
-  noAction
+  //noAction
 }
 
-final roundStatusProvider = Provider.autoDispose.family<RoundStatus, Round>(
+final carouselImageProvider =
+    StateNotifierProvider<CarouselPlaceProvider, String>(
+        (_) => CarouselPlaceProvider());
+
+class CarouselPlaceProvider extends StateNotifier<String> {
+  CarouselPlaceProvider() : super("");
+}
+
+final roundStatusProvider = Provider.autoDispose.family<RoundStatus?, Round>(
   (ref, r) {
     final String uid = ref.read(firebaseUserProvider).uid;
     if (r.asking == uid || r.to == uid) {
@@ -122,7 +130,7 @@ final roundStatusProvider = Provider.autoDispose.family<RoundStatus, Round>(
                 : RoundStatus.studentAnswered;
       }
     }
-    return RoundStatus.noAction;
+    return null;
   },
 );
 

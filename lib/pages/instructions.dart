@@ -107,32 +107,6 @@ class HowToPlay extends ConsumerWidget {
       );
 }
 
-/*Stack(
-          children: [
-            PageView(
-              controller: instructionPageController,
-              onPageChanged: (i) =>
-                  ref.watch(indexStateProvider.notifier).state = i,
-              children: [
-                Opacity(
-                  opacity: math.max(0, math.max(0, _offsetValue)),
-                  child: Container(
-                    color: Colors.blue.shade50,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(
-                        vertical: size.width * 0.05,
-                        horizontal: size.width * 0.02),
-                    child: const PageOne(),
-                  ),
-                ),
-                Container(),
-                Container(),
-              ],
-            ),
-            const RowIndicator()
-          ],
-        )*/
-
 class PageOne extends StatelessWidget {
   const PageOne({Key? key}) : super(key: key);
 

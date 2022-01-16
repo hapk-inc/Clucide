@@ -21,7 +21,6 @@ class AuthCheck extends ConsumerWidget {
       (_, asyncV) {
         asyncV.whenData(
           (_auth) {
-            if (_auth) ref.refresh(firebaseUserProvider);
             wPage.replaceAll(
               MyPage(_auth ? const Dashboard() : const Login()),
             );

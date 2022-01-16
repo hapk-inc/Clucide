@@ -65,15 +65,7 @@ class Winner extends ConsumerWidget {
                                           '$picLocation/${card.name}.png'),
                                     ),
                                   ),
-                                ) /*CircleName(
-                                    titleFactor: 0.05,
-                                    fontColor: Colors.blue,
-                                    subTitleFactor: 0.02,
-                                    name: cards[e]!.name,
-                                    backgroundColor: Colors.blue.shade200,
-                                    radiusFactor: 0.175,
-                                  )*/
-                                    ;
+                                );
                               },
                             ).toList(),
                             alignment: WrapAlignment.center,
@@ -122,98 +114,3 @@ class Winner extends ConsumerWidget {
     );
   }
 }
-
-/*Flexible(
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: size.width * 0.025,
-                          runSpacing: size.height * 0.01,
-                          children: ["Regina", "Saw", "Lift"]
-                              .map((e) => Chip(
-                                    label: Container(
-                                      width: size.width * 0.3,
-                                      height: size.height * 0.05,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        e,
-                                        style: TextStyle(
-                                          fontSize: size.width * 0.04,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    elevation: 4,
-                                  ))
-                              .toList(),
-                        ),
-                      ),
-                      Flexible(
-                        child: FadeInLeft(
-                          child: Text.rich(
-                            TextSpan(
-                              text: "By\t\t",
-                              children: [
-                                TextSpan(
-                                  text: "Player1",
-                                  style:
-                                      TextStyle(fontSize: size.width * 0.075),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      )*/
-
-/*Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                  text: "Case solved\n\n",
-                  style: GoogleFonts.luckiestGuy(fontSize: size.width * 0.1)),
-              WidgetSpan(
-                child: Chip(
-                  label: Container(
-                    width: size.width * 0.275,
-                    height: size.height * 0.05,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Regina",
-                      style: TextStyle(fontSize: size.width * 0.04),
-                    ),
-                  ),
-                  elevation: 4,
-                ),
-              ),
-              const TextSpan(text: "\t\t"),
-              WidgetSpan(
-                child: Chip(
-                  label: Container(
-                    width: size.width * 0.275,
-                    height: size.height * 0.05,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Regina",
-                      style: TextStyle(fontSize: size.width * 0.04),
-                    ),
-                  ),
-                  elevation: 4,
-                ),
-              ),
-              TextSpan(text: '\t\tand'),
-              WidgetSpan(
-                child: Chip(
-                  label: Container(
-                    width: size.width * 0.275,
-                    height: size.height * 0.05,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Regina",
-                      style: TextStyle(fontSize: size.width * 0.04),
-                    ),
-                  ),
-                  elevation: 4,
-                ),
-              ),
-            ],
-          ),
-        )*/

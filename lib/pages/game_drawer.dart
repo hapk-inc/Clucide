@@ -26,25 +26,22 @@ class GameDrawer extends ConsumerWidget {
         Flexible(
           child: Container(
             alignment: Alignment.center,
-            //padding: EdgeInsets.all(size.width * 0.01),
             child: ListTile(
-              leading: Image.asset(
-                  'assets/avatar_icon/${me.as}.png') /*Icon(
-                Icons.person,
-                color: Colors.blue,
-                size: size.height * 0.075,
-              )*/
-              ,
+              leading: Image.asset('assets/avatar_icon/${me.as}.png'),
               contentPadding: EdgeInsets.all(size.width * 0.02),
               title: Text(
                 me.name,
-                style:
-                    TextStyle(fontSize: size.width * 0.04, color: Colors.blue),
+                style: TextStyle(
+                  fontSize: size.width * 0.04,
+                  color: Colors.blue,
+                ),
               ),
               subtitle: Text(
                 "as " + (toBeginningOfSentenceCase(players[user]!.as) ?? ""),
                 style: TextStyle(
-                    fontSize: size.width * 0.025, color: Colors.black87),
+                  fontSize: size.width * 0.025,
+                  color: Colors.black87,
+                ),
               ),
             ),
           ),

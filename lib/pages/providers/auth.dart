@@ -79,11 +79,6 @@ class Auth {
   Future signInAnonymous({String name = ""}) =>
       _auth.signInAnonymously().then((_) => updateName(name));
 
-/*  Future signInAnonymous({String name = "Who??"}) async =>
-      await _auth.signInAnonymously().then(
-            (_) async => _auth.currentUser!.updateDisplayName(name),
-          );*/
-
   Future get signOut async => _auth.signOut();
 
   Future userInit(String name) =>

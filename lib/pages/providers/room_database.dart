@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:traccia/model/game_user.dart';
+import '/model/game_user.dart';
 import '/model/room.dart';
 
 import 'auth.dart';

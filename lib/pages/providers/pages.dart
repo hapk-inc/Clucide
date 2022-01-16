@@ -67,7 +67,7 @@ class MyPage<T> extends Page<T> {
       ? SlideRightRoute(page: child)
       : MaterialPageRoute(builder: (context) => child, settings: this);*/
 
-class SlideRightRoute extends PageRouteBuilder {
+/*class SlideRightRoute extends PageRouteBuilder {
   final Widget page;
   SlideRightRoute({required this.page})
       : super(
@@ -91,4 +91,4 @@ class SlideRightRoute extends PageRouteBuilder {
             child: child,
           ),
         );
-}
+}*/

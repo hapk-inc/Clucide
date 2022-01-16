@@ -131,7 +131,6 @@ class RoomPlayers extends ConsumerWidget {
               data: (data) {
                 return WrapSuper(
                   alignment: WrapSuperAlignment.center,
-                  //innerDistance: -size.width * 0.075,
                   spacing: -size.width * 0.05,
                   lineSpacing: -size.height * 0.01,
                   children: data.entries.map<Widget>(
@@ -162,53 +161,6 @@ class RoomPlayers extends ConsumerWidget {
     );
   }
 }
-
-/*FadeInRight(
-                        child: SizedBox.square(
-                          dimension: size.height * 0.15,
-                          child: Card(
-                            color: e.key == creatorId
-                                ? Colors.blue.shade100
-                                : Colors.blue.shade400,
-                            elevation: 8,
-                            shape: const CircleBorder(),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Flexible(
-                                    flex: 2,
-                                    child: Text(
-                                      name.substring(0, 2).toUpperCase(),
-                                      style: GoogleFonts.poppins(
-                                        fontSize: size.height * 0.05,
-                                        fontWeight: FontWeight.bold,
-                                        color: e.key != creatorId
-                                            ? Colors.blue.shade100
-                                            : Colors.blue,
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: FittedBox(
-                                      child: Text(
-                                        name,
-                                        style: GoogleFonts.poppins(
-                                          color: e.key != creatorId
-                                              ? Colors.blue.shade100
-                                              : Colors.blue,
-                                          fontSize: size.height * 0.015,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )*/
 
 class CircleName extends StatelessWidget {
   final String name;

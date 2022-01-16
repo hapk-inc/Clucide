@@ -111,9 +111,7 @@ class ClueRound extends ConsumerWidget {
                 action: yourRound
                     ? SnackBarAction(
                         label: 'Accuse Now',
-                        onPressed: () => ref.watch(
-                          accusingProvider(true),
-                        ),
+                        onPressed: () => ref.watch(accusingProvider(true)),
                       )
                     : null,
               ),
@@ -133,7 +131,6 @@ class ClueRound extends ConsumerWidget {
         async.whenData(
           (round) async {
             if (round != null) {
-              //final Map<String, bool?> playerAnswers = round.answers;
               if (user == round.asking) {
                 if (ref.watch(placeOccupiedNotifier.notifier).state !=
                     round.place) {
@@ -141,11 +138,10 @@ class ClueRound extends ConsumerWidget {
                 }
               }
               if (round.accusing == null) {
-                //if (round.answers.isNotEmpty) {
                 if (round.answers.values.every((check) => check == false)) {
                   accuseSnackBar();
                 } else {
-                  RoundStatus roundStatus =
+                  RoundStatus? roundStatus =
                       ref.watch(roundStatusProvider(round));
 
                   switch (roundStatus) {
@@ -195,8 +191,7 @@ class ClueRound extends ConsumerWidget {
                         await selectRoundAnswer(commonClues);
                       }
                       break;
-                    case RoundStatus.noAction:
-                      // TODO: Handle this case.
+                    case null:
                       break;
                   }
                 }
@@ -211,7 +206,6 @@ class ClueRound extends ConsumerWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          //color: Colors.blue.shade50,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(size.width * 0.01),
           ),
@@ -247,7 +241,7 @@ class ClueRound extends ConsumerWidget {
                           : "$teacherName saw the player's card"
                       : round.answers.values
                               .every((element) => element == false)
-                          ? "Noone has the above cards"
+                          ? "No-one has the above cards"
                           : round.answers[stud] == null
                               ? "$teacherName is checking with $studName"
                               : "$studName said " +
@@ -299,38 +293,15 @@ class ClueRound extends ConsumerWidget {
                                       : round.roundAnswer == e
                                           ? 1
                                           : 0.25,
-                                  child: /*Container(
-                                    width: size.width * 0.3,
-                                    decoration: BoxDecoration(
-                                      color: Colors.primaries[Random()
-                                          .nextInt(Colors.primaries.length)],
-                                      */ /*image: DecorationImage(
-                                        image: AssetImage(
-                                            '$picLocation/${card.name}.png'),
-                                        scale: 0.25,
-                                        fit: BoxFit.contain,
-                                      ),*/ /*
-                                      shape: BoxShape.circle,
-                                      //border: CircleBorder(),
-                                    ),
-                                    padding: EdgeInsets.all(size.width * 0.025),
-                                    child: Image.asset(
-                                        '$picLocation/${card.name}.png'),
-                                  )*/
-                                      Column(
+                                  child: Column(
                                     children: [
                                       Flexible(
                                         flex: 4,
                                         child: CircleAvatar(
                                           radius: size.width * 0.175,
-                                          //minRadius: size.width * 0.1,
-                                          //maxRadius: size.width * 0.2,
                                           backgroundColor: Colors.primaries[
                                               Random().nextInt(
                                                   Colors.primaries.length)],
-                                          /*backgroundImage: AssetImage(
-                                            '$picLocation/${card.name}.png',
-                                    ),*/
                                           child: AspectRatio(
                                             aspectRatio: 0.9,
                                             child: Image.asset(
@@ -343,15 +314,7 @@ class ClueRound extends ConsumerWidget {
                                               toBeginningOfSentenceCase(name) ??
                                                   ""))
                                     ],
-                                  ) /*CircleName(
-                                    name: name,
-                                    radiusFactor: 0.15,
-                                    backgroundColor: Colors.indigo,
-                                    fontColor: Colors.white60,
-                                    titleFactor: 0.05,
-                                    subTitleFactor: 0.015,
-                                  )*/
-                                  ,
+                                  ),
                                 );
                               },
                             ).toList(),
@@ -572,31 +535,3 @@ class FinalCardAccusation extends ConsumerWidget {
     );
   }
 }
-
-/*WrapSuper(
-                      alignment: WrapSuperAlignment.center,
-                      spacing: size.width * 0.02,
-                      children: cards.entries
-                          .map(
-                            (e) => ActionChip(
-                                backgroundColor: e.value.type == CardType.person
-                                    ? Colors.red.shade100
-                                    : e.value.type == CardType.weapon
-                                        ? Colors.green.shade100
-                                        : Colors.blue.shade100,
-                                elevation: 4,
-                                label: Container(
-                                  width: size.width *
-                                      (Random().nextBool() ? 0.25 : 0.2),
-                                  padding: EdgeInsets.all(size.width * 0.0225),
-                                  child: Text(
-                                    toBeginningOfSentenceCase(e.value.name) ??
-                                        "",
-                                    style: TextStyle(
-                                        fontSize: size.width * 0.0275),
-                                  ),
-                                ),
-                                onPressed: () {}),
-                          )
-                          .toList(),
-                    )*/

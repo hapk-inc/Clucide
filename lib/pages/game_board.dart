@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:traccia/pages/providers/room.dart';
-import 'package:traccia/pages/winner.dart';
+import 'providers/room.dart';
+import 'winner.dart';
 import '/model/player.dart';
 import '/model/clue_card.dart';
 import 'clue_round.dart';
@@ -51,65 +51,35 @@ class GameBoard extends ConsumerWidget {
     );
 
     ref.listen<List<String>>(
-        boardInActivePlayerNotifier.select((value) => value.value ?? []),
-        (previous, next) {
-      Map<String, Player> players = ref.watch(playersProvider).value ?? {};
-      final int totalIds = players.length;
-      if (totalIds != 0) {
-        final inActiveCount = next.length;
-        if (totalIds - inActiveCount < 3) {
-          ref.watch(updateWinnerFalseProvider);
-        } else {
-          for (var id in next) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                //backgroundColor: Colors.blue.shade700,
-                padding: EdgeInsets.all(size.width * 0.01),
-                content: Container(
-                  height: size.height * 0.05,
-                  alignment: Alignment.center,
-                  child: Text(
-                    "${players[id]!.name} is inActive",
-                    style: GoogleFonts.poppins(
-                        color: Colors.white70, fontSize: size.width * 0.03),
+      boardInActivePlayerNotifier.select((value) => value.value ?? []),
+      (previous, next) {
+        Map<String, Player> players = ref.watch(playersProvider).value ?? {};
+        final int totalIds = players.length;
+        if (totalIds != 0) {
+          final inActiveCount = next.length;
+          if (totalIds - inActiveCount < 3) {
+            ref.watch(updateWinnerFalseProvider);
+          } else {
+            for (var id in next) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  padding: EdgeInsets.all(size.width * 0.01),
+                  content: Container(
+                    height: size.height * 0.05,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "${players[id]!.name} is inActive",
+                      style: GoogleFonts.poppins(
+                          color: Colors.white70, fontSize: size.width * 0.03),
+                    ),
                   ),
                 ),
-              ),
-            );
+              );
+            }
           }
         }
-      }
-      /*List<String> newInActive =
-          next.toSet().difference(previous!.toSet()).toList();
-      final Map<String, Player> players =
-          ref.watch(playersProvider).value ?? {};
-      final List<String> allIds = players.keys.toList();
-      final List<String> pendingIds =
-          allIds.toSet().difference(next.toSet()).toList();*/
-      /*if (pendingIds.length <= 2) {
-        ref.watch(updateWinnerFalseProvider);
-      } else {
-        for (var id in newInActive) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              //backgroundColor: Colors.blue.shade700,
-              padding: EdgeInsets.all(size.width * 0.01),
-              content: Container(
-                height: size.height * 0.05,
-                alignment: Alignment.center,
-                child: Text(
-                  "${players[id]!.name} is inActive",
-                  style: GoogleFonts.poppins(
-                      color: Colors.white70, fontSize: size.width * 0.03),
-                ),
-              ),
-            ),
-          );
-        }
-      }*/
-
-      //List<String> playerNames = newInActive.map((e) => players)
-    });
+      },
+    );
 
     ref.listen<bool?>(
       gameWinnerProvider.select((value) => value.value),
@@ -171,13 +141,30 @@ class GameBoardState extends ConsumerWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(size.width * 0.025),
+      body: AnimatedContainer(
+        //padding: EdgeInsets.all(size.width * 0.025),
+        duration: const Duration(milliseconds: 500),
+        decoration: BoxDecoration(
+          image: ref.watch(carouselImageProvider).isNotEmpty
+              ? DecorationImage(
+                  image: AssetImage(
+                      'assets/places/${ref.watch(carouselImageProvider)}.jpg'),
+                  fit: BoxFit.fitHeight,
+                  opacity: 0.25,
+                )
+              : null,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: const [
-            Flexible(flex: 2, child: BoardPlayers()),
-            Flexible(flex: 7, child: CarouselPlaces()),
+            Flexible(
+                flex: 2,
+                child: Card(
+                    color: Colors.white, elevation: 4, child: BoardPlayers())),
+            Flexible(
+              flex: 7,
+              child: CarouselPlaces(),
+            ),
             Flexible(child: CurrentTurnName()),
           ],
         ),
@@ -302,6 +289,10 @@ class CarouselPlaces extends ConsumerWidget {
                 autoPlayAnimationDuration: const Duration(seconds: 2),
                 viewportFraction: 0.75,
                 height: size.height * 0.5,
+                onPageChanged: (index, reason) {
+                  final ClueCard card = map.values.elementAt(index);
+                  ref.watch(carouselImageProvider.notifier).state = card.name;
+                },
               ),
             ),
     );
@@ -442,105 +433,6 @@ class ShowModalBottomSuspect extends ConsumerWidget {
         ),
       ),
     );
-    /*return FractionallySizedBox(
-      heightFactor: 0.75,
-      child: Padding(
-        padding: EdgeInsets.all(size.width * 0.05),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Flexible(
-                    child: FittedBox(
-                      child: Text(
-                        "In ${toBeginningOfSentenceCase(mapEntry.value.name + "..") ?? ""}",
-                        style: GoogleFonts.poppins(
-                          fontSize: size.width * 0.05,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: ElevatedButton(
-                      onPressed: !suspectNotifier.withOutPlace
-                          ? null
-                          : () {
-                              //ref.read(suspectsNotifierProvider).setCard(placeMap.value);
-                              ref
-                                  .read(suspectsNotifierProvider)
-                                  .setCard(mapEntry.value);
-                              ref
-                                  .read(createRoundProvider.future)
-                                  .then((value) {
-                                print("round created");
-                              }).whenComplete(() => Navigator.pop(context));
-                            },
-                      child: Text(
-                        "Pick a person and weapon",
-                        style: GoogleFonts.poppins(),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 9,
-              child: Padding(
-                padding: EdgeInsets.all(size.width * 0.02),
-                child: WrapSuper(
-                  children: map.entries
-                      .map(
-                        (e) => InkWell(
-                          onTap: () => suspectNotifier.setCard(e.value),
-                          child: AnimatedOpacity(
-                            duration: const Duration(milliseconds: 500),
-                            opacity: suspectNotifier.validateClick(e) ? 1 : 0.5,
-                            child: Text(
-                              toBeginningOfSentenceCase(e.value.name) ?? "",
-                              style: randomFont(Random().nextInt(6)).copyWith(
-                                fontSize: size.width * 0.07,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  alignment: WrapSuperAlignment.center,
-                  lineSpacing: size.height * 0.02,
-                  spacing: size.width * 0.02,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );*/
-  }
-
-  TextStyle randomFont(int index) {
-    switch (index) {
-      case 0:
-        return GoogleFonts.fredokaOne(letterSpacing: 5);
-      case 1:
-        return GoogleFonts.bangers(letterSpacing: 1);
-      case 2:
-        return GoogleFonts.pacifico(letterSpacing: 2);
-      case 3:
-        return GoogleFonts.orbitron();
-      case 4:
-        return GoogleFonts.luckiestGuy(letterSpacing: 1);
-      case 5:
-        return GoogleFonts.pressStart2p();
-      default:
-        return GoogleFonts.poppins();
-    }
   }
 }
 
@@ -577,130 +469,106 @@ class BoardPlayers extends ConsumerWidget {
         Flexible(
           flex: 9,
           child: ref.watch(playersProvider).when(
-                data: (data) => RowSuper(
-                  children: data.entries
-                      .map(
-                        (e) => AnimatedOpacity(
-                          duration: const Duration(milliseconds: 500),
-                          opacity: e.key == currentId ? 1 : 0.2,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Flexible(
-                                flex: 8,
-                                child: InkWell(
-                                  /* onTap: () => showModalBottomSheet(
-                                    context: context,
-                                    backgroundColor: Colors.blue.shade50,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft:
-                                            Radius.circular(size.width * 0.05),
-                                        topRight:
-                                            Radius.circular(size.width * 0.05),
-                                      ),
-                                    ),
-                                    builder: (context) => FractionallySizedBox(
-                                      heightFactor: 0.3,
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.all(size.width * 0.025),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Flexible(
-                                              child: Text(
-                                                "Which card you want to show?",
-                                                style: GoogleFonts.poppins(
-                                                    fontSize:
-                                                        size.width * 0.0325,
-                                                    fontWeight:
-                                                        FontWeight.w200),
+                data: (data) => data.length > 3
+                    ? RotatedBox(
+                        quarterTurns: -1,
+                        child: ListWheelScrollView.useDelegate(
+                          itemExtent: size.width * 0.25,
+                          childDelegate: ListWheelChildLoopingListDelegate(
+                            children: data.entries
+                                .map(
+                                  (e) => RotatedBox(
+                                    quarterTurns: 1,
+                                    child: AnimatedOpacity(
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      opacity: e.key == currentId ? 1 : 0.4,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Flexible(
+                                            flex: 4,
+                                            child: CircleAvatar(
+                                              radius: size.width * 0.125,
+                                              backgroundColor: Colors
+                                                  .primaries[Random().nextInt(
+                                                      Colors.primaries.length)]
+                                                  .shade400,
+                                              backgroundImage: AssetImage(
+                                                  'assets/avatar_icon/${e.value.as}.png'),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Text(
+                                              toBeginningOfSentenceCase(
+                                                      e.value.name) ??
+                                                  "",
+                                              style: TextStyle(
+                                                fontSize: size.width * 0.03,
                                               ),
                                             ),
-                                            Flexible(
-                                              flex: 2,
-                                              child: RowSuper(
-                                                children: [
-                                                  "Ken",
-                                                  "Saw",
-                                                  "Clothing"
-                                                ]
-                                                    .map(
-                                                      (e) => Chip(
-                                                        elevation: 4,
-                                                        label: Container(
-                                                          width:
-                                                              size.width * 0.25,
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  size.width *
-                                                                      0.0225),
-                                                          child: Text(
-                                                            e,
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    size.width *
-                                                                        0.0275),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                    .toList(),
-                                              ),
-                                            )
-                                          ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          magnification: 1.5,
+                        ),
+                      )
+                    : RowSuper(
+                        children: data.entries
+                            .map(
+                              (e) => AnimatedOpacity(
+                                duration: const Duration(milliseconds: 500),
+                                opacity: e.key == currentId ? 1 : 0.2,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Flexible(
+                                      flex: 8,
+                                      child: InkWell(
+                                        child: CircleAvatar(
+                                          radius: size.width * 0.15,
+                                          backgroundColor: Colors
+                                              .primaries[Random().nextInt(
+                                                  Colors.primaries.length)]
+                                              .shade200,
+                                          child: AspectRatio(
+                                            aspectRatio: 0.95,
+                                            child: Image.asset(
+                                                'assets/avatar_icon/${e.value.as}.png'),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),*/
-                                  child: CircleAvatar(
-                                    radius: size.width * 0.15,
-                                    backgroundColor: Colors
-                                        .primaries[Random()
-                                            .nextInt(Colors.primaries.length)]
-                                        .shade200,
-                                    child: AspectRatio(
-                                      aspectRatio: 0.95,
-                                      child: Image.asset(
-                                          'assets/avatar_icon/${e.value.as}.png'),
-                                    ),
-                                  ) /*CircleName(
-                                    name: e.value.as,
-                                    radiusFactor: 0.15,
-                                    titleFactor: 0.15 / data.length,
-                                    subTitleFactor: 0.075 / data.length,
-                                    backgroundColor: Colors.blue,
-                                    fontColor: Colors.white60,
-                                  )*/
-                                  ,
+                                    Flexible(
+                                      flex: 2,
+                                      child: AnimatedOpacity(
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                        opacity: e.key == currentId ? 1 : 0.25,
+                                        child: Text(
+                                          e.value.name,
+                                          style: TextStyle(
+                                            fontSize: size.height * 0.0175,
+                                          ),
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Flexible(
-                                flex: 2,
-                                child: AnimatedOpacity(
-                                  duration: const Duration(milliseconds: 500),
-                                  opacity: e.key == currentId ? 1 : 0.25,
-                                  child: Text(
-                                    e.value.name,
-                                    style: TextStyle(
-                                      fontSize: size.height * 0.0175,
-                                    ),
-                                    overflow: TextOverflow.fade,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  alignment: Alignment.centerLeft,
-                  innerDistance: -size.width * (0.15 / data.length),
-                ),
+                            )
+                            .toList(),
+                        alignment: Alignment.centerLeft,
+                        innerDistance: -size.width * (0.15 / data.length),
+                      ),
                 error: (error, stackTrace) => Container(),
                 loading: () => Container(),
               ),
