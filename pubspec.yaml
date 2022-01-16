@@ -43,7 +43,7 @@ dependencies:
 
   animate_do: ^2.0.0
   flutter_riverpod: ^1.0.2
-  animations: ^2.0.2
+  # animations: ^2.0.2
 
   intl: ^0.17.0
   assorted_layout_widgets: ^5.2.1

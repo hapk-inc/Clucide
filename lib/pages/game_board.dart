@@ -154,7 +154,7 @@ class GameBoardState extends ConsumerWidget {
         elevation: 4,
         toolbarHeight: size.height * 0.075,
         title: Text(
-          "Case No: ${ref.watch(roomProvider).value!.roomCode}",
+          "Case No: ${ref.watch(roomProvider).value == null ? 00000 : ref.watch(roomProvider).value!.roomCode}",
           style: GoogleFonts.poppins(fontSize: size.width * 0.04),
         ),
         actions: [
@@ -281,7 +281,7 @@ class CarouselPlaces extends ConsumerWidget {
                                         ? toBeginningOfSentenceCase(
                                                 card.name) ??
                                             ""
-                                        : "${toBeginningOfSentenceCase(card.name) ?? ""} (Occupied)",
+                                        : "${toBeginningOfSentenceCase(card.name) ?? ""} (${players[card.occupiedBy]!.name} Occupied)",
                                     style: TextStyle(
                                       fontSize: size.width * 0.04,
                                       color: Colors.white70,
