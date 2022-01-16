@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "620644384091",
+    "firebase_url": "https://flutterfirebaseapp-3529c.firebaseio.com",
+    "project_id": "flutterfirebaseapp-3529c",
+    "storage_bucket": "flutterfirebaseapp-3529c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620644384091:android:e70bc596f4c8a47da4ae7e",
+        "android_client_info": {
+          "package_name": "inc.hapk.tracciaDemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620644384091-t90dqpksohj84gvkkaea668sco5lj3pf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3dzTPkdyLYBZdLKfqZdLJARCfXKMwzBE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620644384091-t90dqpksohj84gvkkaea668sco5lj3pf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

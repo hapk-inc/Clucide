@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "362761629835",
+    "project_id": "clucide",
+    "storage_bucket": "clucide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362761629835:android:e2a414caf41d4113c4248e",
+        "android_client_info": {
+          "package_name": "inc.hapk.clucide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362761629835-mh7jq6mg7o1hpvlgpompmg9kj1kd4cle.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl051ELuwmlnOxGgxsAubrKacM6uXc69Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362761629835-mh7jq6mg7o1hpvlgpompmg9kj1kd4cle.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
