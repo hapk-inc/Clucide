@@ -14,6 +14,8 @@ class Round with _$Round {
     required String place,
     @Default({}) Map<String, bool?> answers,
     String? roundAnswer,
+    required int createdOn,
+    //@Default(false) bool allAnswered,
     bool? accusing,
   }) = _Round;
 

@@ -4,20 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '/model/clue_card.dart';
+import 'package:traccia/models/clue_card.dart';
+import 'package:traccia/models/player.dart';
+import 'package:traccia/provider/board.dart';
+//import '/model/clue_card.dart';
 
-import 'providers/board.dart';
-import '/model/player.dart';
+//import 'providers/board.dart';
+//import '/model/player.dart';
 
-class Winner extends ConsumerWidget {
-  const Winner({Key? key}) : super(key: key);
+class WinnerPage extends ConsumerWidget {
+  final bool winner;
+  const WinnerPage({Key? key, required this.winner}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     final Map<String, ClueCard> cards = ref.watch(cardsProvider).value!;
     final Map<String, Player> players = ref.watch(playersProvider).value!;
-    final bool winner = ModalRoute.of(context)!.settings.arguments as bool;
+    //final bool winner = ModalRoute.of(context)!.settings.arguments as bool;
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -46,23 +50,17 @@ class Winner extends ConsumerWidget {
                         Flexible(
                           flex: 7,
                           child: Wrap(
-                            children: hidden.map(
+                            children:
+                                ref.watch(suspectsNotifierProvider).idList.map(
                               (e) {
                                 final ClueCard card = cards[e]!;
-                                final String picLocation =
-                                    card.type == CardType.place
-                                        ? 'assets/places_icon'
-                                        : card.type == CardType.weapon
-                                            ? 'assets/weapons_icon'
-                                            : 'assets/avatar_icon';
 
                                 return FadeIn(
                                   child: CircleAvatar(
                                     radius: size.width * 0.175,
                                     child: AspectRatio(
                                       aspectRatio: 0.9,
-                                      child: Image.asset(
-                                          '$picLocation/${card.name}.png'),
+                                      child: Image.asset(card.imagePath),
                                     ),
                                   ),
                                 );

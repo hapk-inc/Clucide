@@ -10,11 +10,14 @@ class Player with _$Player {
   const factory Player({
     required String as,
     required String name,
-    @Default(true) bool isActive,
     required int playerNo,
     required int cardCount,
     required List<String> clues,
   }) = _Player;
 
   factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
+
+  const Player._();
+
+  String get asImage => "assets/avatar_icon/$as.png";
 }

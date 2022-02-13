@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import '/model/clue_card.dart';
+import 'package:traccia/models/clue_card.dart';
+
 import 'board.dart';
 
 class InitBoard {

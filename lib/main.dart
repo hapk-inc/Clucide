@@ -1,12 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'pages/auth_check.dart';
-import 'pages/providers/auth.dart';
+import 'package:in_app_update/in_app_update.dart';
+import 'package:traccia/route/my_router.gr.dart';
+import 'provider/auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,18 +26,72 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+final myRouter = MyRouter();
+
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        title: "Clucide",
-        theme: ThemeData(
-          textTheme: TextTheme(
-            bodyText1: GoogleFonts.poppins(),
-            bodyText2: GoogleFonts.poppins(),
+  Widget build(BuildContext context, WidgetRef ref) {
+    PageRouteInfo userCheck() => ref.watch(userCheckProvider).when(
+          data: (data) => !data
+              ? const LoginRoute()
+              : ref.watch(gameUserProvider).when(
+                    data: (_) {
+                      ref.watch(updateUserProvider);
+                      return const AppStackRoute();
+                    },
+                    error: (error, stackTrace) => const NoInternetRoute(),
+                    loading: () => const SplashRoute(),
+                  ),
+          error: (error, stackTrace) => const NoInternetRoute(),
+          loading: () => const SplashRoute(),
+        );
+
+    return MaterialApp.router(
+      // routerDelegate: myRouter.delegate(),
+      theme: ThemeData(
+        textTheme: TextTheme(
+          bodyText1: GoogleFonts.poppins(color: Colors.black87),
+          bodyText2: GoogleFonts.poppins(color: Colors.black54),
+          button: GoogleFonts.poppins(color: Colors.black54),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            textStyle: MaterialStateProperty.all(
+              GoogleFonts.poppins(fontSize: 16),
+            ),
           ),
         ),
-        home: const AuthCheck(),
-      );
+      ),
+      routeInformationParser: myRouter.defaultRouteParser(),
+      routerDelegate: /*myRouter.delegate()*/
+          AutoRouterDelegate.declarative(
+        myRouter,
+        routes: (_) => [
+          if (kDebugMode)
+            userCheck()
+          else
+            ref.watch(inAppUpdateProvider).when(
+                  data: (value) => value.updateAvailability ==
+                          UpdateAvailability.updateAvailable
+                      ? const AppUpdateRoute()
+                      : userCheck(),
+                  error: (error, stackTrace) => const NoInternetRoute(),
+                  loading: () => const SplashRoute(),
+                ),
+          //const GameRoomRoute(),
+        ],
+      ),
+    );
+  }
+}
+
+class AppStackPage extends StatelessWidget {
+  const AppStackPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const EmptyRouterScreen();
+  }
 }

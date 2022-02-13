@@ -16,3 +16,6 @@ class Room with _$Room {
 
   factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);
 }
+
+//  keytool -genkey -v -keystore c:\Users\Balaj\upload-keystore.jks -storetype
+//  JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload
