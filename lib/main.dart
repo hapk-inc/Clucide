@@ -2,18 +2,24 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:traccia/route/my_router.gr.dart';
+
 import 'provider/auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final FirebaseApp app = await Firebase.initializeApp();
   await FirebaseAppCheck.instance.activate();
+
+  // Pass all uncaught errors from the framework to Crashlytics.
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
   runApp(
     ProviderScope(
       overrides: [
@@ -41,10 +47,25 @@ class MyApp extends ConsumerWidget {
                       ref.watch(updateUserProvider);
                       return const AppStackRoute();
                     },
-                    error: (error, stackTrace) => const NoInternetRoute(),
+                    error: (error, stackTrace) {
+                      FirebaseCrashlytics.instance
+                          .recordError(error, stackTrace,
+                              reason: 'Game User Error',
+                              // Pass in 'fatal' argument
+                              fatal: true);
+                      return const NoInternetRoute();
+                    },
                     loading: () => const SplashRoute(),
                   ),
-          error: (error, stackTrace) => const NoInternetRoute(),
+          error: (error, stackTrace) {
+            FirebaseCrashlytics.instance.recordError(
+              error, stackTrace,
+              reason: 'User Check Error',
+              // Pass in 'fatal' argument
+              fatal: true,
+            );
+            return const NoInternetRoute();
+          },
           loading: () => const SplashRoute(),
         );
 
@@ -77,10 +98,15 @@ class MyApp extends ConsumerWidget {
                           UpdateAvailability.updateAvailable
                       ? const AppUpdateRoute()
                       : userCheck(),
-                  error: (error, stackTrace) => const NoInternetRoute(),
+                  error: (error, stackTrace) {
+                    FirebaseCrashlytics.instance.recordError(error, stackTrace,
+                        reason: 'App Update Error',
+                        // Pass in 'fatal' argument
+                        fatal: true);
+                    return const NoInternetRoute();
+                  },
                   loading: () => const SplashRoute(),
                 ),
-          //const GameRoomRoute(),
         ],
       ),
     );
