@@ -114,39 +114,33 @@ class AllRounds extends ConsumerWidget {
                                   top: 0,
                                   width: size.width * 0.25,
                                   height: size.height * 0.2,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    //color: Colors.red,
-                                    child: ListView(
-                                      reverse: true,
-                                      children: round.answers.entries
-                                          .map(
-                                            (e) => SizedBox(
-                                              height: size.height * 0.04,
-                                              child: ListTile(
-                                                title: AutoSizeText(
-                                                  toBeginningOfSentenceCase(
-                                                          players[e.key]!
-                                                              .name) ??
-                                                      "",
-                                                  maxLines: 1,
-                                                  style: GoogleFonts.poppins(
-                                                      color: e.value == null
-                                                          ? Colors.white30
-                                                          : Colors.white70,
-                                                      decoration:
-                                                          e.value == false
-                                                              ? TextDecoration
-                                                                  .lineThrough
-                                                              : null),
-                                                  //textAlign: TextAlign.end,
-                                                ),
+                                  child: ListView(
+                                    //reverse: true,
+                                    children: round.answers.entries
+                                        .map(
+                                          (e) => SizedBox(
+                                            height: size.height * 0.04,
+                                            child: ListTile(
+                                              title: AutoSizeText(
+                                                toBeginningOfSentenceCase(
+                                                        players[e.key]!.name) ??
+                                                    "",
+                                                maxLines: 1,
+                                                style: GoogleFonts.poppins(
+                                                    color: e.value == null
+                                                        ? Colors.white30
+                                                        : Colors.white70,
+                                                    decoration: e.value == false
+                                                        ? TextDecoration
+                                                            .lineThrough
+                                                        : null),
+                                                //textAlign: TextAlign.end,
                                               ),
                                             ),
-                                          )
-                                          .toList(),
-                                      //shrinkWrap: true,
-                                    ),
+                                          ),
+                                        )
+                                        .toList(),
+                                    //shrinkWrap: true,
                                   ),
                                 ),
                               ],
@@ -331,74 +325,92 @@ class RoundAnswerOption extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     final cards = ref.watch(cardsProvider).value;
-    final meClues = ref.watch(mePlayerProvider).value!.clues;
+    //final meClues = ref.watch(mePlayerProvider).value!.clues;
     return FractionallySizedBox(
       heightFactor: 0.4,
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(size.width * 0.01),
-            topRight: Radius.circular(size.width * 0.01),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const Flexible(
-                flex: 2, child: Text("Which card you want to show?")),
-            Flexible(
-                flex: 8,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: meClues
-                      .map((e) => Opacity(
-                            opacity: clues.contains(e) ? 1 : 0.2,
-                            child: Card(
-                              color: Colors.blue,
-                              elevation: 4,
-                              child: InkWell(
-                                onTap: !clues.contains(e)
-                                    ? null
-                                    : () => ref
-                                        .watch(
-                                            updateRoundAnswerProvider(e).future)
-                                        .whenComplete(
-                                          () => Navigator.pop(context),
-                                        ),
-                                child: Box(
-                                  width: size.width * 0.2,
-                                  padding: Pad(all: size.width * 0.01),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Flexible(
-                                        flex: 8,
-                                        child:
-                                            Image.asset(cards![e]!.imagePath),
-                                      ),
-                                      Flexible(
-                                        flex: 2,
-                                        child: AutoSizeText(
-                                          toBeginningOfSentenceCase(
-                                                  cards[e]!.name) ??
-                                              "",
-                                          style: const TextStyle(
-                                              color: Colors.white70),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                ))
-          ],
-        ),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        child: ref.watch(mePlayerProvider).when(
+              data: (me) => me == null
+                  ? Container()
+                  : Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(size.width * 0.01),
+                          topRight: Radius.circular(size.width * 0.01),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          const Flexible(
+                              flex: 2,
+                              child: Text("Which card you want to show?")),
+                          Flexible(
+                              flex: 8,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: me.clues
+                                    .map((e) => Opacity(
+                                          opacity: clues.contains(e) ? 1 : 0.2,
+                                          child: Card(
+                                            color: Colors.blue,
+                                            elevation: 4,
+                                            child: InkWell(
+                                              onTap: !clues.contains(e)
+                                                  ? null
+                                                  : () => ref
+                                                      .watch(
+                                                          updateRoundAnswerProvider(
+                                                                  e)
+                                                              .future)
+                                                      .whenComplete(
+                                                        () => Navigator.pop(
+                                                            context),
+                                                      ),
+                                              child: Box(
+                                                width: size.width * 0.2,
+                                                padding:
+                                                    Pad(all: size.width * 0.01),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Flexible(
+                                                      flex: 8,
+                                                      child: Image.asset(
+                                                          cards![e]!.imagePath),
+                                                    ),
+                                                    Flexible(
+                                                      flex: 2,
+                                                      child: AutoSizeText(
+                                                        toBeginningOfSentenceCase(
+                                                                cards[e]!
+                                                                    .name) ??
+                                                            "",
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.white70),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ))
+                        ],
+                      ),
+                    ),
+              error: (error, stackTrace) =>
+                  Container(color: Colors.red.shade400),
+              loading: () => Container(),
+            ),
       ),
     );
   }

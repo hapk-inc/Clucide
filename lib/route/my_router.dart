@@ -36,4 +36,6 @@ import '/pages/splash.dart';
 
 //for freezed
 //flutter pub run build_runner build
+//release
+//flutter build appbundle --flavor dev
 class $MyRouter {}

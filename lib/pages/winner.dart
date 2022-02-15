@@ -50,8 +50,7 @@ class WinnerPage extends ConsumerWidget {
                         Flexible(
                           flex: 7,
                           child: Wrap(
-                            children:
-                                ref.watch(suspectsNotifierProvider).idList.map(
+                            children: hidden.map(
                               (e) {
                                 final ClueCard card = cards[e]!;
 
