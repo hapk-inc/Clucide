@@ -1,6 +1,7 @@
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -118,89 +119,104 @@ class _GameBoardPageState extends ConsumerState<GameBoardPage>
       (previous, async) {
         async.whenData(
           (round) async {
-            if (round != null) {
-              final String user = ref.watch(firebaseUserProvider).uid;
+            try {
+              if (round != null) {
+                final String user = ref.watch(firebaseUserProvider).uid;
 
-              if (round.accusing == null) {
-                if (round.answers.values.every((check) => check == false)) {
-                  if (round.asking == user) {
-                    for (var clueKey in round.clues) {
-                      for (var playerKey in round.answers.keys) {
-                        ref
-                            .watch(playerClueNotifier)
-                            .update(clueKey, playerKey, PersonAnswer.no);
+                if (round.accusing == null) {
+                  if (round.answers.values.every((check) => check == false)) {
+                    if (round.asking == user) {
+                      for (var clueKey in round.clues) {
+                        for (var playerKey in round.answers.keys) {
+                          ref
+                              .watch(playerClueNotifier)
+                              .update(clueKey, playerKey, PersonAnswer.no);
+                        }
                       }
                     }
-                  }
-                  if (round.asking == user) {
-                    showAccuseSnackBar();
-                  }
-                } else {
-                  RoundStatus? roundStatus =
-                      ref.watch(roundStatusProvider(round));
+                    if (round.asking == user) {
+                      showAccuseSnackBar();
+                    }
+                  } else {
+                    RoundStatus? roundStatus =
+                        ref.watch(roundStatusProvider(round));
 
-                  switch (roundStatus) {
-                    case RoundStatus.teacher:
-                      if (round.roundAnswer != null) {
-                        if (round.answers.containsValue(false)) {
-                          for (var clueKey in round.clues) {
-                            for (var playerKey in round.answers.keys.where(
-                                (element) => round.answers[element] == false)) {
-                              ref
-                                  .watch(playerClueNotifier)
-                                  .update(clueKey, playerKey, PersonAnswer.no);
+                    switch (roundStatus) {
+                      case RoundStatus.teacher:
+                        if (round.roundAnswer != null) {
+                          if (round.answers.containsValue(false)) {
+                            for (var clueKey in round.clues) {
+                              for (var playerKey in round.answers.keys.where(
+                                  (element) =>
+                                      round.answers[element] == false)) {
+                                ref.watch(playerClueNotifier).update(
+                                    clueKey, playerKey, PersonAnswer.no);
+                              }
                             }
                           }
+                          ref.watch(playerClueNotifier).update(
+                              round.roundAnswer!,
+                              round.to!,
+                              PersonAnswer.verified);
+
+                          showAccuseSnackBar();
                         }
-                        ref.watch(playerClueNotifier).update(round.roundAnswer!,
-                            round.to!, PersonAnswer.verified);
+                        break;
+                      case RoundStatus.student:
+                        print("Checking Student");
+                       // final Player? me =
+                       //     await ref.watch(mePlayerProvider.future);
+                        final Map<String,Player> players = Map<String,Player>.from(ref.watch(playersProvider).value??{});
 
-                        showAccuseSnackBar();
-                      }
-                      break;
-                    case RoundStatus.student:
-                      print("Checking Student");
-                      final Player? me =
-                          await ref.watch(mePlayerProvider.future);
-                      final bool doYouHave =
-                          round.clues.any((clue) => me!.clues.contains(clue));
-                      ref
-                          .watch(boardDatabaseProvider)
-                          .updatePlayerAnswer(round, doYouHave);
+                        final Player? me = players[user];
+                        final bool doYouHave =
+                            round.clues.any((clue) => me!.clues.contains(clue));
+                        ref
+                            .watch(boardDatabaseProvider)
+                            .updatePlayerAnswer(round, doYouHave);
 
-                      break;
-                    case RoundStatus.studentAnswered:
-                      if (round.roundAnswer == null &&
-                          round.answers[user] == true) {
-                        await selectRoundAnswer(round.clues);
-                      }
+                        break;
+                      case RoundStatus.studentAnswered:
+                        if (round.roundAnswer == null &&
+                            round.answers[user] == true) {
+                          await selectRoundAnswer(round.clues);
+                        }
 
-                      break;
+                        break;
 
-                    case RoundStatus.teacherStudent:
-                      final List<String> myClues =
-                          ref.watch(mePlayerProvider).value!.clues;
-                      final bool doYouHave =
-                          round.clues.any((clue) => myClues.contains(clue));
-                      Future.delayed(
-                          const Duration(milliseconds: 500),
-                          () => ref
-                              .watch(boardDatabaseProvider)
-                              .updatePlayerAnswer(round, doYouHave));
+                      case RoundStatus.teacherStudent:
+                        final Map<String,Player> players = Map<String,Player>.from(ref.watch(playersProvider).value??{});
 
-                      break;
-                    case RoundStatus.teacherStudentAnswered:
-                      if (round.roundAnswer != null) {
-                        showAccuseSnackBar();
-                      } else {
-                        await selectRoundAnswer(round.clues);
-                      }
-                      break;
-                    case null:
-                      break;
+                        final Player? me = players[user];
+                        final bool doYouHave =
+                            round.clues.any((clue) => me!.clues.contains(clue));
+                        Future.delayed(
+                            const Duration(milliseconds: 500),
+                            () => ref
+                                .watch(boardDatabaseProvider)
+                                .updatePlayerAnswer(round, doYouHave));
+
+                        break;
+                      case RoundStatus.teacherStudentAnswered:
+                        if (round.roundAnswer != null) {
+                          showAccuseSnackBar();
+                        } else {
+                          await selectRoundAnswer(round.clues);
+                        }
+                        break;
+                      case null:
+                        break;
+                    }
                   }
                 }
               }
+            } catch (e) {
+              FirebaseCrashlytics.instance.recordError(
+                e,
+                null,
+                reason: 'Round Error',
+                fatal: true,
+              );
             }
           },
         );

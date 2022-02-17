@@ -1,5 +1,6 @@
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +10,6 @@ import 'package:traccia/models/player.dart';
 import 'package:traccia/pages/game_board.dart';
 import 'package:traccia/provider/auth.dart';
 import 'package:traccia/provider/board.dart';
-import 'package:collection/collection.dart';
 
 class PlayersAndVenues extends StatelessWidget {
   const PlayersAndVenues({Key? key}) : super(key: key);
@@ -132,7 +132,12 @@ class ClueChoiceEx extends ConsumerWidget {
     final Size size = MediaQuery.of(context).size;
     final Map<String, ClueCard> cards =
         Map<String, ClueCard>.from(ref.watch(cardsProvider).value ?? {});
-    final Player? mePlayer = ref.watch(mePlayerProvider).value;
+    final String user = ref.watch(firebaseUserProvider).uid;
+    final Map<String, Player> players =
+        Map<String, Player>.from(ref.watch(playersProvider).value ?? {});
+    //final Player? mePlayer = ref.watch(mePlayerProvider).value;
+
+    final Player? mePlayer = players[user];
     final suspectNotifier = ref.watch(suspectsNotifierProvider);
     return AlertDialog(
       title: SizedBox(

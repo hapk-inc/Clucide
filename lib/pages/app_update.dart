@@ -63,18 +63,21 @@ class UpdateButton extends StatelessWidget {
       heightFactor: 0.3,
       widthFactor: 0.9,
       child: ElevatedButton(
-        onPressed: () => InAppUpdate.performImmediateUpdate().catchError(
-          (error, _) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'Reopen the app again for update.',
-                  style: GoogleFonts.poppins(),
+        onPressed: () {
+          print("Running App Update");
+          InAppUpdate.performImmediateUpdate().catchError(
+            (error, _) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Reopen the app again for update.',
+                    style: GoogleFonts.poppins(),
+                  ),
                 ),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          );
+        },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.black54),
             shape: MaterialStateProperty.all(
