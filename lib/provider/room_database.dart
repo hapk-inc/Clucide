@@ -24,7 +24,7 @@ class RoomDatabase {
   final Reader read;
 
   RoomDatabase(this.read) {
-    firestore = read(firestoreProvider);
+    firestore = read(fireStoreProvider);
     roomCollection = firestore.collection('rooms');
   }
   //final String? id;
@@ -43,11 +43,11 @@ class RoomDatabase {
         },
       ).then((value) => value.id);*/
 
-  Future<String> get createRoom {
+  Future<String> get createRoom async {
     final String uid = read(firebaseUserProvider).uid;
     final GameUser user = read(gameUserProvider).value!;
     int newCode = 100000 + Random.secure().nextInt(999999 - 100000);
-    return roomCollection
+    return await roomCollection
         .add(
           Room(
             roomCode: newCode,
@@ -55,7 +55,7 @@ class RoomDatabase {
             creatorName: user.name,
           ).toJson(),
         )
-        .then((value) => value.id);
+        .then((value) async => value.id);
   }
 
 /* Future joinRoom(User user, GameUser gameUser) =>

@@ -16,17 +16,20 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final FirebaseApp app = await Firebase.initializeApp();
   await FirebaseAppCheck.instance.activate();
+  final crashlytics = FirebaseCrashlytics.instance;
 
   // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  FlutterError.onError = crashlytics.recordFlutterError;
 
   runApp(
     ProviderScope(
       overrides: [
+        crashlyticsProvider.overrideWithValue(crashlytics),
         firebaseAppProvider.overrideWithValue(app),
-        firestoreProvider
+        fireStoreProvider
             .overrideWithValue(FirebaseFirestore.instanceFor(app: app)),
       ],
+      //observers: [],
       child: const MyApp(),
     ),
   );
@@ -48,7 +51,9 @@ class MyApp extends ConsumerWidget {
                       return const AppStackRoute();
                     },
                     error: (error, stackTrace) {
-                      FirebaseCrashlytics.instance
+                      //FirebaseCrashlytics.instance
+                      ref
+                          .read(crashlyticsProvider)
                           .recordError(error, stackTrace,
                               reason: 'Game User Error',
                               // Pass in 'fatal' argument
@@ -58,12 +63,12 @@ class MyApp extends ConsumerWidget {
                     loading: () => const SplashRoute(),
                   ),
           error: (error, stackTrace) {
-            FirebaseCrashlytics.instance.recordError(
-              error, stackTrace,
-              reason: 'User Check Error',
-              // Pass in 'fatal' argument
-              fatal: true,
-            );
+            ref.read(crashlyticsProvider).recordError(
+                  error, stackTrace,
+                  reason: 'User Check Error',
+                  // Pass in 'fatal' argument
+                  fatal: true,
+                );
             return const NoInternetRoute();
           },
           loading: () => const SplashRoute(),
@@ -99,7 +104,8 @@ class MyApp extends ConsumerWidget {
                       ? const AppUpdateRoute()
                       : userCheck(),
                   error: (error, stackTrace) {
-                    FirebaseCrashlytics.instance.recordError(error, stackTrace,
+                    //FirebaseCrashlytics.instance
+                    ref.read(crashlyticsProvider).recordError(error, stackTrace,
                         reason: 'App Update Error',
                         // Pass in 'fatal' argument
                         fatal: true);

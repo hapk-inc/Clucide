@@ -1,7 +1,6 @@
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
-import 'package:auto_route/src/router/auto_router_x.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -164,9 +163,11 @@ class _GameBoardPageState extends ConsumerState<GameBoardPage>
                         break;
                       case RoundStatus.student:
                         print("Checking Student");
-                       // final Player? me =
-                       //     await ref.watch(mePlayerProvider.future);
-                        final Map<String,Player> players = Map<String,Player>.from(ref.watch(playersProvider).value??{});
+                        // final Player? me =
+                        //     await ref.watch(mePlayerProvider.future);
+                        final Map<String, Player> players =
+                            Map<String, Player>.from(
+                                ref.watch(playersProvider).value ?? {});
 
                         final Player? me = players[user];
                         final bool doYouHave =
@@ -185,7 +186,9 @@ class _GameBoardPageState extends ConsumerState<GameBoardPage>
                         break;
 
                       case RoundStatus.teacherStudent:
-                        final Map<String,Player> players = Map<String,Player>.from(ref.watch(playersProvider).value??{});
+                        final Map<String, Player> players =
+                            Map<String, Player>.from(
+                                ref.watch(playersProvider).value ?? {});
 
                         final Player? me = players[user];
                         final bool doYouHave =
@@ -211,12 +214,13 @@ class _GameBoardPageState extends ConsumerState<GameBoardPage>
                 }
               }
             } catch (e) {
-              FirebaseCrashlytics.instance.recordError(
-                e,
-                null,
-                reason: 'Round Error',
-                fatal: true,
-              );
+              //FirebaseCrashlytics.instance
+              ref.read(crashlyticsProvider).recordError(
+                    e,
+                    null,
+                    reason: 'Round Error',
+                    fatal: true,
+                  );
             }
           },
         );

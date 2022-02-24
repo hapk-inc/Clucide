@@ -1,21 +1,11 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:introduction_screen/introduction_screen.dart';
-import '/provider/auth.dart';
 
-/*Text(
-                "CLUCIDE",
-                style: GoogleFonts.poppins(
-                  fontSize: size.width * 0.2,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              )*/
+import '/provider/auth.dart';
 
 final controller = TextEditingController();
 
@@ -26,7 +16,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      //backgroundColor: Colors.black54,
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
@@ -55,95 +44,122 @@ class LoginPage extends StatelessWidget {
               //fit: FlexFit.tight,
             ),
             Flexible(
-              flex: 8,
-              child: IntroductionScreen(
-                pages: [
-                  PageViewModel(
-                    titleWidget: Text(
-                      "SOLVE CRIME, MEAN TIME",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.wallpoet(
-                          fontSize: size.width * 0.05, color: Colors.grey),
+              flex: 6,
+              child: Box(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Flexible(
+                      child: AutoSizeText(
+                        "Let's solve a crime.".toUpperCase(),
+                        style: GoogleFonts.wallpoet(
+                          fontSize: size.width * 0.04,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
-                    bodyWidget: Container(
-                      color: Colors.white,
+                    Flexible(
+                      flex: 4,
                       child: Image.asset(
                         'assets/case-file.png',
                         alignment: Alignment.center,
                       ),
-                    ),
-                    decoration: const PageDecoration(
-                      //pageColor: Colors.black87,
-                      bodyAlignment: Alignment.center,
-                    ),
-                  ),
-                  PageViewModel(
-                    titleWidget: TextField(
-                      controller: controller,
-                      cursorHeight: size.height * 0.05,
-                      cursorColor: Colors.indigo.shade100,
-                      style: GoogleFonts.poppins(
-                        fontSize: size.width * 0.075,
-                        color: Colors.indigo,
-                      ),
-                      onEditingComplete: () {} /*=> _onSubmitted()*/,
-                      decoration: InputDecoration(
-                        hintText: "Enter Name",
-                        filled: true,
-                        hintStyle: GoogleFonts.poppins(
-                          fontSize: size.width * 0.075,
-                          color: Colors.indigo.shade200,
-                          fontWeight: FontWeight.w200,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: ButtonBarSuper(
+                alignment: WrapSuperAlignment.right,
+                wrapFit: WrapFit.min,
+                children: [
+                  TextButton(
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(
+                          "Enter your name and Login",
+                          style: GoogleFonts.poppins(
+                            fontSize: size.width * 0.04,
+                          ),
                         ),
-                        contentPadding: Pad(all: size.width * 0.05),
+                        content: FractionallySizedBox(
+                          heightFactor: 0.3,
+                          child: Box(
+                            padding: Pad(all: size.width * 0.01),
+                            child: const Center(
+                              child: NameTextField(),
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          Consumer(
+                            builder: (context, ref, child) => TextButton(
+                              onPressed: () {
+                                // Validate returns true if the form is valid, or false otherwise.
+                                if (_formKey.currentState!.validate()) {
+                                  FocusScope.of(context).unfocus();
+                                  ref.watch(anonymousProvider(controller.text));
+                                }
+                              },
+                              child: Text(
+                                "LOGIN",
+                                style: TextStyle(fontSize: size.width * .04),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    //image: Image.asset('assets/case-file.png'),
-                    bodyWidget: Container(
-                      padding: Pad(all: size.width * 0.05),
-                      color: Colors.grey.shade200,
-                      width: size.width,
-                      height: size.height * 0.55,
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        //crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                              Flexible(
-                                flex: 2,
-                                child: FadeInRight(
-                                  child: Text(
-                                    "How would like to login?",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: size.width * 0.07,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ] +
-                            AuthMethod.values
-                                .map(
-                                  (e) => AuthButton(authMethod: e),
-                                )
-                                .toList(),
-                      ),
+                    child: Text(
+                      "START",
+                      style: GoogleFonts.luckiestGuy(
+                          fontSize: size.width * .05, color: Colors.grey
+                          //fontWeight: FontWeight.bold,
+                          ),
+                      //style: GoogleFonts.poppins(),
                     ),
                   )
                 ],
-                next: Text(
-                  "NEXT",
-                  style: GoogleFonts.poppins(
-                    fontSize: size.width * 0.05,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                //color: Colors.black54,
-                showNextButton: true,
-                showDoneButton: false,
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+final _formKey = GlobalKey<FormState>();
+
+class NameTextField extends StatelessWidget {
+  const NameTextField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return Form(
+      key: _formKey,
+      child: TextFormField(
+        controller: controller,
+        autofocus: true,
+        validator: (value) {
+          String text = value ?? "";
+          return text.isEmpty || text.length < 5
+              ? "Name should be more than 5 characters"
+              : null;
+        },
+        decoration: InputDecoration(
+          hintText: "Ex: Sherlock",
+          hintStyle: GoogleFonts.poppins(color: Colors.grey),
+          errorStyle: GoogleFonts.poppins(), errorMaxLines: 2,
+          //errorText: validateText(controller.text),
+        ),
+        style: GoogleFonts.poppins(
+          color: Colors.blue,
+          fontSize: size.width * 0.04,
         ),
       ),
     );

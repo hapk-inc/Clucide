@@ -32,7 +32,7 @@ class BoardDatabase {
   BoardDatabase(this._read) {
     boardId = _read(idNotifierProvider.notifier).state;
 
-    boardDocRef = _read(firestoreProvider).collection('boards').doc(boardId);
+    boardDocRef = _read(fireStoreProvider).collection('boards').doc(boardId);
     cardRef = boardDocRef.collection('cards');
     playerRef = boardDocRef.collection('players');
     roundRef = boardDocRef.collection('rounds');
@@ -72,7 +72,7 @@ class BoardDatabase {
   Stream<QuerySnapshot> get allPlayerStatus => pStatusRef.snapshots();
 
   Future init(InitBoard initBoard) {
-    final FirebaseFirestore firebaseFirestore = _read(firestoreProvider);
+    final FirebaseFirestore firebaseFirestore = _read(fireStoreProvider);
     final WriteBatch writeBatch = firebaseFirestore.batch();
     initBoard
       ..cardMap.forEach(
@@ -141,7 +141,7 @@ class BoardDatabase {
   Future get createRound async {
     final String id = generateID;
 
-    final FirebaseFirestore firebaseFirestore = _read(firestoreProvider);
+    final FirebaseFirestore firebaseFirestore = _read(fireStoreProvider);
     final WriteBatch writeBatch = firebaseFirestore.batch();
 
     Round round = _read(suspectsNotifierProvider).initRound;
@@ -239,7 +239,7 @@ class BoardDatabase {
     if (winner) {
       return pStatusRef.doc(uid).update({"winner": true});
     }
-    final FirebaseFirestore firebaseFirestore = _read(firestoreProvider);
+    final FirebaseFirestore firebaseFirestore = _read(fireStoreProvider);
     final WriteBatch writeBatch = firebaseFirestore.batch();
     final playerId = _read(playerRoundOrderProvider(uid)).first;
 

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_update/in_app_update.dart';
@@ -12,13 +13,16 @@ final firebaseAppProvider = Provider<FirebaseApp>(
   (_) => throw UnimplementedError(),
 );
 
+final crashlyticsProvider =
+    Provider<FirebaseCrashlytics>((_) => throw UnimplementedError());
+
 final Provider<Auth> authProvider = Provider<Auth>(
   (ref) {
     return Auth(ref.read);
   },
 );
 
-final Provider<FirebaseFirestore> firestoreProvider =
+final Provider<FirebaseFirestore> fireStoreProvider =
     Provider<FirebaseFirestore>(
   (_) => throw UnimplementedError(),
 );
@@ -90,7 +94,7 @@ class Auth {
 
   Auth(this.read) /* Auth(FirebaseApp app)*/ {
     _auth = FirebaseAuth.instanceFor(app: /*app*/ read(firebaseAppProvider));
-    firebaseFirestore = read(firestoreProvider);
+    firebaseFirestore = read(fireStoreProvider);
     userCollection = firebaseFirestore.collection('users');
     //firebaseFirestore = FirebaseFirestore.instanceFor(app: app);
   }

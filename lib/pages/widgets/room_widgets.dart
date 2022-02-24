@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '/provider/room.dart';
 
 class RoomPlayers extends ConsumerWidget {
@@ -101,14 +102,18 @@ class CircleName extends StatelessWidget {
                   ),
                 ),
                 Flexible(
-                  child: FittedBox(
-                    child: AutoSizeText(
-                      name,
-                      maxLines: 1,
-                      style: GoogleFonts.poppins(
-                        color: fontColor,
-                        fontSize: size.height * subTitleFactor,
-                        //fontSize: size.height * 0.015,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                    child: FittedBox(
+                      child: AutoSizeText(
+                        name,
+                        maxLines: 1,
+                        style: GoogleFonts.poppins(
+                          color: fontColor,
+                          fontSize: size.height * subTitleFactor,
+                          //fontSize: size.height * 0.015,
+                        ),
                       ),
                     ),
                   ),

@@ -10,15 +10,19 @@ import 'room_database.dart';
 
 final AutoDisposeFutureProvider<String> createRoomProvider =
     FutureProvider.autoDispose<String>(
-  (ref) {
-    final roomDatabase = ref.read(roomDatabaseProvider);
-    return roomDatabase.createRoom;
+  (ref) async {
+    try {
+      final roomDatabase = ref.watch(roomDatabaseProvider);
+      return await roomDatabase.createRoom;
+    } catch (e) {
+      return "";
+    }
   },
 );
 
 final AutoDisposeFutureProvider joinRoomProvider = FutureProvider.autoDispose(
   (ref) {
-    final roomDatabase = ref.read(roomDatabaseProvider);
+    final roomDatabase = ref.watch(roomDatabaseProvider);
     return roomDatabase.joinRoom;
   },
 );
