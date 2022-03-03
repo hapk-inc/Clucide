@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'clue_card.freezed.dart';
@@ -29,4 +30,29 @@ class ClueCard with _$ClueCard {
   }
 
   String get locationPath => "assets/places/$name.jpg";
+
+  MaterialColor get dialogColor {
+    switch (name) {
+      case "lift":
+        return Colors.purple;
+      case "bowling":
+        return Colors.brown;
+      case "electronics":
+        return Colors.lightBlue;
+      case "clothing":
+        return Colors.blueGrey;
+      case "parking":
+        return Colors.indigo;
+      case "restroom":
+        return Colors.grey;
+      case "supermarket":
+        return Colors.deepOrange;
+      case "restaurant":
+        return Colors.orange;
+      case "theatre":
+        return Colors.red;
+      default:
+        return Colors.red;
+    }
+  }
 }

@@ -1,3 +1,4 @@
+/*
 import 'dart:math';
 
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
@@ -186,6 +187,7 @@ class AllRounds extends ConsumerWidget {
   }
 }
 
+*/
 /*List.generate(
                                         5,
                                         (index) => AutoSizeText(
@@ -202,8 +204,10 @@ class AllRounds extends ConsumerWidget {
                                           ),
                                           maxLines: 1,
                                         ),
-                                      )*/
+                                      )*/ /*
 
+
+*/
 /*
 ListView(
       children: List.generate(
@@ -213,7 +217,9 @@ ListView(
           margin: EdgeInsets.symmetric(vertical: size.height * 0.001),
           decoration: BoxDecoration(
               color: Colors.blueGrey.shade800,
-              */
+              */ /*
+
+*/
 /*image: DecorationImage(
                       image: AssetImage(
                           const ClueCard(name: "lift", type: CardType.place)
@@ -221,6 +227,8 @@ ListView(
                       fit: BoxFit.cover,
                       opacity: 0.4,
                     ),*/ /*
+ */
+/*
 
               borderRadius: BorderRadius.circular(size.width * 0.01)),
           padding: EdgeInsets.all(size.width * 0.01),
@@ -315,7 +323,8 @@ ListView(
         ),
       ),
     )
-*/
+*/ /*
+
 
 class RoundAnswerOption extends ConsumerWidget {
   final List<String> clues;
@@ -416,6 +425,7 @@ class RoundAnswerOption extends ConsumerWidget {
   }
 }
 
+*/
 /*class RoundAnswerOption extends ConsumerWidget {
   final List<String> commonClues;
   const RoundAnswerOption(this.commonClues, {Key? key}) : super(key: key);

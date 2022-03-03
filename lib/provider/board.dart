@@ -1,3 +1,79 @@
+import 'package:collection/collection.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../models/clue_card.dart';
+import '../models/player.dart';
+import '../models/player_status.dart';
+import 'board_database.dart';
+import 'init_board.dart';
+import 'room.dart';
+
+const List<String> persons = [
+  ...["adam", "cheng", "emily"],
+  ...["ken", "regina", "richard"]
+];
+
+const List<String> weapons = [
+  ...["gun", "knife", "plug"],
+  ...["saw", "shovel", "syringe"]
+];
+
+const List<String> groundFloor = ["parking", "lift", "restroom"];
+const List<String> firstFloor = ["supermarket", "clothing", "electronics"];
+const List<String> secondFloor = ["theatre", "bowling", "restaurant"];
+
+const List<String> places = [...groundFloor, ...firstFloor, ...secondFloor];
+
+final createBoardProvider = FutureProvider.autoDispose(
+  (ref) async {
+    final Map players = await ref.read(lastActivePlayerProvider.future);
+    final board = CreateBoard(UnmodifiableMapView(players));
+    return ref.read(boardDatabaseProvider).initBoard(board);
+  },
+);
+
+final boardPlayerProvider = FutureProvider.autoDispose(
+    (ref) => ref.read(boardDatabaseProvider).boardPlayers);
+
+final cardsProvider = FutureProvider.autoDispose<Map<String, ClueCard>>(
+    (ref) => ref.read(boardDatabaseProvider).cards);
+
+final playerStatusProvider =
+    StreamProvider.autoDispose.family<PlayerStatus, String>(
+  (ref, id) => ref.read(boardDatabaseProvider).status(id),
+);
+
+final currentIDProvider = StreamProvider.autoDispose<String>(
+  (ref) {
+    final boardDatabase = ref.read(boardDatabaseProvider);
+    return boardDatabase.currentId;
+  },
+);
+
+final playerRoundOrderProvider =
+    Provider.autoDispose.family<List<String>, String>(
+  (ref, id) {
+    final Map<String, Player> players =
+        Map<String, Player>.from(ref.watch(boardPlayerProvider).value ?? {});
+    if (players.length == 1) return [id];
+    final List<String> ids = players.keys.toList();
+    final int userIndex = ids.indexOf(id);
+    return [
+      ...ids.getRange(userIndex + 1, ids.length),
+      if (userIndex != 0) ...ids.getRange(0, userIndex)
+    ];
+  },
+);
+
+final AutoDisposeStreamProvider<String?> roundIdProvider =
+    StreamProvider.autoDispose<String?>(
+  (ref) {
+    final BoardDatabase boardDatabase = ref.read(boardDatabaseProvider);
+    return boardDatabase.roundId;
+  },
+);
+
+/*
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:traccia/models/clue_card.dart';
@@ -196,10 +272,13 @@ final updateRoundAnswerProvider =
     return boardDatabase.updateSelectedAnswer(id);
   },
 );
+*/
 /*
 
 final roundNotifierProvider =
     ChangeNotifierProvider.autoDispose((ref) => RoundNotifier((ref.read)));
+*/ /*
+
 */
 /*
 class RoundNotifier extends ChangeNotifier {
@@ -207,7 +286,9 @@ class RoundNotifier extends ChangeNotifier {
 
   RoundNotifier(this._reader);
 
-  */ /*bool _openClueChoice = false;
+  */ /*
+ */
+/*bool _openClueChoice = false;
   bool _roundOver = false;
   bool _roundAnswered = false;
   Round? _gameRound;
@@ -261,7 +342,10 @@ class RoundNotifier extends ChangeNotifier {
   bool get roundOver => _roundOver;
 
   bool get roundAnswered => _roundAnswered;*/ /*
-}*/
+ */
+/*
+}*/ /*
+
 
 final accusingProvider = FutureProvider.autoDispose.family<void, bool>(
   (ref, accusing) {
@@ -305,3 +389,4 @@ class PlayerClues extends ChangeNotifier {
     return _pClues.keys.where((_id) => a.contains(_pClues[_id])).toList();
   }
 }
+*/

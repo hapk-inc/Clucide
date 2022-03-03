@@ -1,3 +1,16 @@
+import 'package:flutter/material.dart';
+
+class WinnerPage extends StatelessWidget {
+  final bool winner;
+  const WinnerPage({Key? key, this.winner = false}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Container());
+  }
+}
+
+/*
 import 'package:animate_do/animate_do.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
@@ -111,3 +124,4 @@ class WinnerPage extends ConsumerWidget {
     );
   }
 }
+*/

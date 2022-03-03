@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_update/in_app_update.dart';
@@ -26,6 +27,9 @@ final Provider<FirebaseFirestore> fireStoreProvider =
     Provider<FirebaseFirestore>(
   (_) => throw UnimplementedError(),
 );
+
+final Provider<FirebaseDatabase> databaseProvider =
+    Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
 
 final inAppUpdateProvider = FutureProvider.autoDispose<AppUpdateInfo>(
   (_) async => InAppUpdate.checkForUpdate(),

@@ -25,7 +25,11 @@ import '/pages/splash.dart';
       children: [
         AutoRoute(path: '', page: DashboardPage),
         AutoRoute(path: 'room', page: GameRoomPage),
-        AutoRoute(path: 'game_board', page: GameBoardPage),
+        AutoRoute(
+          path: 'game_board',
+          page: GameBoardPage,
+          children: [],
+        ),
         AutoRoute(path: 'winner', page: WinnerPage),
       ],
     ),

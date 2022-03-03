@@ -1,4 +1,82 @@
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
+import '../../models/clue_card.dart';
+
+class ClueTile extends StatelessWidget {
+  final ClueCard clue;
+  final bool myClue;
+  final bool isFound;
+  const ClueTile({
+    Key? key,
+    required this.clue,
+    this.myClue = false,
+    this.isFound = false,
+  }) : super(key: key);
+
+  MaterialColor tileColor(CardType type, {bool hadCard = false}) {
+    if (hadCard) return Colors.blueGrey;
+    switch (type) {
+      case CardType.person:
+        return Colors.lightBlue;
+      case CardType.weapon:
+        return Colors.pink;
+      case CardType.place:
+        return Colors.lightGreen;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return Container(
+      color: tileColor(clue.type, hadCard: isFound || myClue).shade900,
+      height: MediaQuery.of(context).size.height * 0.1,
+      padding: Pad(all: size.width * 0.01),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Flexible(
+              flex: 4,
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Image.asset(clue.imagePath),
+                  ),
+                  Flexible(
+                    flex: 4,
+                    child: ListTile(
+                      title: Text(
+                        toBeginningOfSentenceCase(clue.name) ?? "",
+                        style: GoogleFonts.poppins(
+                          fontSize: size.width * 0.04,
+                          color: Colors.white70,
+                        ),
+                      ),
+                      subtitle: myClue
+                          ? Text(
+                              "Your clue",
+                              style: TextStyle(
+                                color: Colors.blueGrey.shade400,
+                                fontSize: size.width * 0.03,
+                              ),
+                            )
+                          : null,
+                    ),
+                  )
+                ],
+              )),
+          const Spacer(),
+        ],
+      ),
+    );
+  }
+}
+
+/*
+import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +175,8 @@ class VenueList extends ConsumerWidget {
                 ),
               ),
               //footer: Container(),
-              /*footer: index != 8
+              */
+/*footer: index != 8
                   ? null
                   : Container(
                       height: size.height * 0.025,
@@ -108,7 +187,8 @@ class VenueList extends ConsumerWidget {
                             bottomLeft: Radius.circular(size.width * 0.01),
                             bottomRight: Radius.circular(size.width * 0.01),
                           )),
-                      child: const Text("You were occupied")),*/
+                      child: const Text("You were occupied")),*/ /*
+
             ),
           ),
         );
@@ -537,3 +617,4 @@ class OnlyPlayers extends ConsumerWidget {
     );
   }
 }
+*/

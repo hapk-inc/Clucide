@@ -19,5 +19,5 @@ class Player with _$Player {
 
   const Player._();
 
-  String get asImage => "assets/avatar_icon/$as.png";
+  String get asImage => "assets/as_icon/$as.png";
 }

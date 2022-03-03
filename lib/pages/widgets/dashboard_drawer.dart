@@ -1,3 +1,4 @@
+/*
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,10 +23,12 @@ Widget drawerListTile(DrawerList list, Size size) {
             ),
           ),
           subtitle: const AutoSizeText("Learn the instructions"),
-          /*leading: Icon(
+          */
+/*leading: Icon(
             FontAwesomeIcons.clipboard,
             size: size.width * 0.075,
-          ),*/
+          ),*/ /*
+
         ),
       );
     case DrawerList.signOut:
@@ -43,10 +46,12 @@ Widget drawerListTile(DrawerList list, Size size) {
               ),
             ),
             subtitle: const AutoSizeText("Logging off "),
-            /*leading: Icon(
+            */
+/*leading: Icon(
               FontAwesomeIcons.signOutAlt,
               size: size.width * 0.075,
-            ),*/
+            ),*/ /*
+
           ),
         ),
       );
@@ -64,10 +69,12 @@ Widget drawerListTile(DrawerList list, Size size) {
               ),
             ),
             subtitle: const AutoSizeText("Latest App Version"),
-            /*leading: Icon(
+            */
+/*leading: Icon(
               FontAwesomeIcons.googlePlay,
               size: size.width * 0.075,
-            ),*/
+            ),*/ /*
+
           ),
         ),
       );
@@ -107,7 +114,8 @@ class DrawerHeader extends ConsumerWidget {
       flex: 2,
       child: Row(
         children: [
-          /* Flexible(
+          */
+/* Flexible(
             flex: 3,
             child: FractionallySizedBox(
               heightFactor: 0.5,
@@ -115,7 +123,8 @@ class DrawerHeader extends ConsumerWidget {
                 radius: size.width * 0.2,
               ),
             ),
-          ),*/
+          ),*/ /*
+
           Flexible(
             flex: 7,
             child: ListTile(
@@ -167,3 +176,4 @@ class DrawerHeader extends ConsumerWidget {
     );
   }
 }
+*/

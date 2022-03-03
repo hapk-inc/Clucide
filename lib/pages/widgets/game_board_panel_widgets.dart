@@ -1,3 +1,4 @@
+/*
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -286,7 +287,8 @@ class ClueRoundState extends ConsumerWidget {
                   ),
                   Flexible(
                     child: Box(
-                        /*child: Row(
+                        */
+/*child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           const Flexible(
@@ -301,12 +303,17 @@ class ClueRoundState extends ConsumerWidget {
                                 ScaleAnimatedText("Rachell"),
                                 ScaleAnimatedText("Rachell"),
                               ],
-                              */ /* repeatForever: true,
+                              */ /*
+ */
+/* repeatForever: true,
                               isRepeatingAnimation: true,*/ /*
+ */
+/*
                             ),
                           )
                         ],
-                      ),*/
+                      ),*/ /*
+
                         ),
                   )
                 ],
@@ -351,12 +358,14 @@ class PlayerRoundEachAnswers extends ConsumerWidget {
                               : RoundAnswerPlayer.seen
                           : RoundAnswerPlayer.seen
                       : RoundAnswerPlayer.yes;
-          /*  ? round.asking == playerId || round.to == playerId
+          */
+/*  ? round.asking == playerId || round.to == playerId
                           ? playerId == uid
                               ? RoundAnswerPlayer.theCard
                               : RoundAnswerPlayer.seen
                           : RoundAnswerPlayer.yes
-                      : RoundAnswerPlayer.yes;*/
+                      : RoundAnswerPlayer.yes;*/ /*
+
 
           return Card(
             shape: RoundedRectangleBorder(
@@ -389,7 +398,8 @@ class PlayerRoundEachAnswers extends ConsumerWidget {
     );
   }
 
-  /*Container(
+  */
+/*Container(
       color: Colors.blueGrey.shade200,
       height: size.height * 0.2,
       child: ListView.separated(
@@ -418,9 +428,11 @@ class PlayerRoundEachAnswers extends ConsumerWidget {
         separatorBuilder: (BuildContext context, int index) =>
             SizedBox.square(dimension: size.width * 0.025),
       ),
-    );*/
+    );*/ /*
 
-  /*Center(
+
+  */
+/*Center(
         child: WrapSuper(
           children: List.generate(
             5,
@@ -432,7 +444,8 @@ class PlayerRoundEachAnswers extends ConsumerWidget {
           alignment: WrapSuperAlignment.center,
           //innerDistance: -size.width * 0.02,
         ),
-      )*/
+      )*/ /*
+
 
   Widget widgetControlBuilder(context, ControlsDetails details) => Consumer(
         builder: (_, ref, __) {
@@ -633,6 +646,7 @@ class FinalClue extends StatelessWidget {
   }
 }
 
+*/
 /*Row(
                     children: [
                       Flexible(
@@ -646,7 +660,8 @@ class FinalClue extends StatelessWidget {
                             style: TextStyle(color: Colors.grey),
                           )),
                     ],
-                  )*/
+                  )*/ /*
+
 
 class AccuseSnackBar extends StatelessWidget {
   const AccuseSnackBar({Key? key}) : super(key: key);
@@ -753,6 +768,7 @@ class WhichCardUShow extends ConsumerWidget {
   }
 }
 
+*/
 /*ListView(
                 children: List.generate(
                   6,
@@ -774,8 +790,10 @@ class WhichCardUShow extends ConsumerWidget {
                 ),
                 //innerDistance: -size.width * 0.02,
                 //wrapFit: WrapFit.proportional,
-              )*/
+              )*/ /*
 
+
+*/
 /*SizedBox(
                     width: index == 2 ? size.width : null,
                     child: ElevatedButton.icon(
@@ -790,8 +808,10 @@ class WhichCardUShow extends ConsumerWidget {
                         "Bowlling".toUpperCase(),
                       ),
                     ),
-                  )*/
+                  )*/ /*
 
+
+*/
 /*ButtonBarSuper(
                 children: [
                   ElevatedButton.icon(
@@ -824,310 +844,7 @@ class WhichCardUShow extends ConsumerWidget {
                 ],
                 lineSpacing: 2,
                 spacing: 2,
-              )*/
+              )*/ /*
 
-/*  return Stepper(steps: [List.from(elements)],
-      /*steps: playerRoundOrder
-          .map(
-            (e) => AssetImage(ClueCard(
-              name: players[e]!.as,
-              type: CardType.person,
-            ).imagePath),
-          )
-          .toList(),
-      activeStep: 0,
-      direction: Axis.horizontal,*/
-    );*/
 
-/*Stepper(
-      steps: List.from(
-        playerRoundOrder.map<Step>(
-          (id) => Step(
-            title: AutoSizeText(
-              toBeginningOfSentenceCase(players[id]!.name) ?? "",
-              style: GoogleFonts.poppins(
-                fontSize: size.width * 0.04,
-                color: Colors.blueGrey.shade700,
-              ),
-            ),
-            content: Slidable(
-              // Specify a key if the Slidable is dismissible.
-              key: const ValueKey(0),
-
-              // The start action pane is the one at the left or the top side.
-              startActionPane: ActionPane(
-                // A motion is a widget used to control how the pane animates.
-                motion: const ScrollMotion(),
-
-                // A pane can dismiss the Slidable.
-                dismissible: DismissiblePane(onDismissed: () {}),
-
-                // All actions are defined in the children parameter.
-                children: [
-                  // A SlidableAction can have an icon and/or a label.
-                  SlidableAction(
-                    onPressed: (context) {},
-                    backgroundColor: Color(0xFFFE4A49),
-                    foregroundColor: Colors.white,
-                    icon: Icons.delete,
-                    label: 'Delete',
-                  ),
-                  SlidableAction(
-                    onPressed: (context) {},
-                    backgroundColor: Color(0xFF21B7CA),
-                    foregroundColor: Colors.white,
-                    icon: Icons.share,
-                    label: 'Share',
-                  ),
-                ],
-              ),
-
-              // The end action pane is the one at the right or the bottom side.
-              endActionPane: ActionPane(
-                motion: ScrollMotion(),
-                children: [
-                  SlidableAction(
-                    // An action can be bigger than the others.
-                    flex: 2,
-                    onPressed: (context) {},
-                    backgroundColor: Color(0xFF7BC043),
-                    foregroundColor: Colors.white,
-                    icon: Icons.archive,
-                    label: 'Archive',
-                  ),
-                  SlidableAction(
-                    onPressed: (context) {},
-                    backgroundColor: Color(0xFF0392CF),
-                    foregroundColor: Colors.white,
-                    icon: Icons.save,
-                    label: 'Save',
-                  ),
-                ],
-              ),
-              child: Container(
-                height: size.height * 0.1,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-        ),
-      ),
-    )*/
-
-/*Stepper(
-      steps: playerRoundOrder
-          .map<Step>(
-            (_playerId) => Step(
-              title: ListTile(
-                title: AutoSizeText(
-                  toBeginningOfSentenceCase(players[_playerId]!.name) ?? "",
-                  //children: [if(round.to==_playerId)],
-
-                  style: GoogleFonts.poppins(
-                      fontSize: size.width * 0.04, color: Colors.blueGrey),
-                ),
-                /*leading: Image.asset(ClueCard(
-                  name: players[_playerId]!.as,
-                  type: CardType.person,
-                ).imagePath),*/
-              ),
-              content: AnimatedContainer(
-                //height: size.height * 0.075,
-                //width: size.width,
-                //color: Colors.blueGrey.shade50,
-                //alignment: Alignment.topLeft,
-                duration: animDuration,
-                /*child: GridTileBar(
-                  leading: Image.asset(ClueCard(
-                    name: players[_playerId]!.as,
-                    type: CardType.person,
-                  ).imagePath),
-                  title: AnimatedSwitcher(
-                    duration: animDuration,
-                    child: Text(
-                      answerMap[_playerId] == null
-                          ? "Checking his clues.."
-                          : answerMap[_playerId]!
-                              ? "And the answer is Yes"
-                              : "Nope",
-                      key: ValueKey(answerMap[_playerId]),
-                      style: GoogleFonts.poppins(
-                          color: Colors.blueGrey, fontSize: size.width * 0.04),
-                      maxLines: 1,
-                    ),
-                  ),
-                ),*/
-                child: Container(
-                  //color: Colors.red,
-                  height: size.height * 0.125,
-                  child: RowSuper(
-                    children: [
-                      Container(
-                        width: size.width * 0.2,
-                        color: Colors.white70,
-                        child: Card(
-                          elevation: 8,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Flexible(
-                                flex: 8,
-                                child: Image.asset(const ClueCard(
-                                  name: "regina",
-                                  type: CardType.person,
-                                ).imagePath),
-                              ),
-                              Flexible(
-                                flex: 2,
-                                child: AutoSizeText(
-                                    toBeginningOfSentenceCase("ken") ?? ""),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: size.width * 0.2,
-                        color: Colors.white70,
-                        child: Card(
-                          elevation: 8,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Flexible(
-                                flex: 8,
-                                child: Image.asset(const ClueCard(
-                                  name: "regina",
-                                  type: CardType.person,
-                                ).imagePath),
-                              ),
-                              Flexible(
-                                flex: 2,
-                                child: AutoSizeText(
-                                    toBeginningOfSentenceCase("ken") ?? ""),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              state: answerMap[_playerId] == null
-                  ? StepState.disabled
-                  : StepState.indexed,
-            ),
-          )
-          .toList(growable: false),
-      currentStep: playerRoundOrder.indexOf(round.to ?? playerRoundOrder.first),
-      //currentStep: 4,
-      /*controlsBuilder: (context, details) => Container(
-        //color: Colors.blue,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(
-            3,
-            (index) => ActionChip(
-              label: const AutoSizeText("Ken"),
-              avatar: Image.asset(
-                  const ClueCard(name: "ken", type: CardType.person).imagePath),
-              elevation: 8,
-              padding: EdgeInsets.all(size.width * 0.01),
-              onPressed: () {},
-            ),
-          ),
-        ),
-      ),*/
-    )*/
-
-/*Stepper(
-      steps: <Step>[
-        Step(
-          title: Text(
-            "Fred",
-            style: TextStyle(fontSize: size.width * 0.04),
-          ),
-          content: Box(
-            height: size.height * 0.04,
-            alignment: Alignment.topLeft,
-            child: ListTile(
-              title: Text(
-                "Answer: No",
-                style: GoogleFonts.poppins(
-                    color: Colors.blueGrey, fontSize: size.width * 0.04),
-                maxLines: 1,
-              ),
-              subtitle: AutoSizeText(
-                "He showed Gun, Richard in previous rounds",
-                style:
-                    TextStyle(fontSize: size.width * 0.02, color: Colors.grey),
-              ),
-            ),
-          ),
-          //state: StepState.complete,
-        ),
-        const Step(
-            title: Text("Jim"),
-            //subtitle: Text("Subtitle"),
-            content: Box(
-              child: Text("AAAA"),
-            )),
-        Step(title: Text("Frede"), content: Box()),
-        Step(title: Text("Frede"), content: Box()),
-        Step(
-          title: Text("Freds"),
-          content: Box(),
-        ),
-      ],
-      currentStep: 0,
-      controlsBuilder: (context, details) => Container(),
-    )*/
-
-class CollapsedRound extends ConsumerWidget {
-  const CollapsedRound({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final Size size = MediaQuery.of(context).size;
-    final Map<String, Player> players =
-        Map<String, Player>.from(ref.watch(playersProvider).value ?? {});
-    final String currentId = ref.watch(currentIDProvider).maybeWhen(
-          orElse: () => "",
-          data: (data) => data,
-        );
-
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.blueGrey.shade200,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(size.width * 0.05),
-          topRight: Radius.circular(size.width * 0.05),
-        ),
-      ),
-      padding: EdgeInsets.all(size.width * 0.02),
-      child: players.isEmpty || currentId.isEmpty
-          ? null
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Flexible(
-                  child: Text(
-                    "It's " + players[currentId]!.name + "'s turn",
-                    style: TextStyle(
-                      color: Colors.blueGrey.shade800,
-                      fontSize: size.width * 0.03,
-                    ),
-                  ),
-                ),
-                Flexible(
-                    child: ref.watch(roomProvider).value == null
-                        ? Container()
-                        : Text(
-                            "Case No: ${ref.watch(roomProvider).value!.roomCode}"))
-              ],
-            ),
-    );
-  }
-}
+*/

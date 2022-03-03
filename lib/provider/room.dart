@@ -1,3 +1,72 @@
+import 'dart:math';
+
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mock_data/mock_data.dart';
+import 'package:traccia/models/room.dart';
+
+import 'room_database.dart';
+
+final createRoomProvider = Provider.autoDispose<Future<String>>(
+  (ref) {
+    final roomDatabase = ref.watch(roomDatabaseProvider);
+    return roomDatabase.createRoom;
+  },
+);
+
+final joinRoomProvider = Provider.autoDispose(
+  (ref) {
+    final roomDatabase = ref.watch(roomDatabaseProvider);
+    return roomDatabase.joinRoom;
+  },
+);
+
+final AutoDisposeFutureProvider<Room> roomProvider =
+    FutureProvider.autoDispose<Room>(
+  (ref) async {
+    final roomDatabase = ref.read(roomDatabaseProvider);
+    return roomDatabase.room;
+  },
+);
+
+final roomPlayerProvider = Provider.autoDispose<Query>(
+  (ref) {
+    final roomDatabase = ref.read(roomDatabaseProvider);
+    return roomDatabase.playerQuery;
+  },
+);
+
+final AutoDisposeFutureProvider joinAnonymousProvider =
+    FutureProvider.autoDispose(
+  (ref) {
+    final roomDatabase = ref.read(roomDatabaseProvider);
+    return roomDatabase.joinAnonymous(mockName());
+  },
+);
+
+final AutoDisposeStreamProvider<bool> strStartRoomProvider =
+    StreamProvider.autoDispose<bool>(
+  (ref) {
+    final roomDatabase = ref.read(roomDatabaseProvider);
+    return roomDatabase.strStartRoom;
+  },
+);
+
+final lastActivePlayerProvider = FutureProvider<Map>(
+  (ref) {
+    final roomDatabase = ref.read(roomDatabaseProvider);
+    return roomDatabase.lastActive;
+  },
+);
+
+final startRoomProvider = FutureProvider.autoDispose(
+  (ref) {
+    final roomDatabase = ref.read(roomDatabaseProvider);
+    return roomDatabase.startRoomTrue;
+  },
+);
+
+/*
 import 'dart:collection';
 import 'dart:math';
 
@@ -77,3 +146,4 @@ final FutureProviderFamily validateCodeProvider =
     return roomDatabase.validateCode(_code);
   },
 );
+*/

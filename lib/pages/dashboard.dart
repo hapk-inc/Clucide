@@ -2,13 +2,12 @@ import 'package:animate_do/animate_do.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:traccia/models/game_user.dart';
-import 'package:traccia/pages/widgets/room_widgets.dart';
 import 'package:traccia/provider/auth.dart';
 import 'package:traccia/provider/game_id.dart';
 import 'package:traccia/provider/room.dart';
@@ -36,32 +35,47 @@ class _DashboardPageState extends State<DashboardPage>
           child: DashboardDrawer(),
           backgroundColor: Colors.white,
         ),*/
+        resizeToAvoidBottomInset: false,
         body: DashboardState(),
       );
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    /*if (kDebugMode) {
-      print("31 State is" + state.name);
-    }
-    switch (state) {
-      case AppLifecycleState.resumed:
-        // TODO: Handle this case.
-        break;
-      case AppLifecycleState.inactive:
-        // TODO: Handle this case.
-        break;
-      case AppLifecycleState.paused:
-        // TODO: Handle this case.
-        break;
-      case AppLifecycleState.detached:
-        // TODO: Handle this case.
-        break;
-    }*/
+    print(state.name);
     if (state == AppLifecycleState.inactive) {}
     super.didChangeAppLifecycleState(state);
   }
 }
+
+/*ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: const [
+                        CircleName(
+                          name: "Dhanush",
+                          radiusFactor: 0.12,
+                          backgroundColor: Colors.blue,
+                          fontColor: Colors.white,
+                          titleFactor: 0.4,
+                          subTitleFactor: 0.2,
+                        ),
+                        CircleName(
+                          name: "Dhanush",
+                          radiusFactor: 0.1,
+                          backgroundColor: Colors.blue,
+                          fontColor: Colors.white,
+                          titleFactor: 0.4,
+                          subTitleFactor: 0.2,
+                        ),
+                        CircleName(
+                          name: "Dhanush",
+                          radiusFactor: 0.1,
+                          backgroundColor: Colors.blue,
+                          fontColor: Colors.white,
+                          titleFactor: 0.4,
+                          subTitleFactor: 0.2,
+                        ),
+                      ],
+                    )*/
 
 class DashboardState extends ConsumerWidget {
   const DashboardState({Key? key}) : super(key: key);
@@ -108,37 +122,9 @@ class DashboardState extends ConsumerWidget {
               flex: 7,
               child: Column(
                 children: [
-                  Flexible(
-                    flex: 3,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: const [
-                        CircleName(
-                          name: "Dhanush",
-                          radiusFactor: 0.12,
-                          backgroundColor: Colors.blue,
-                          fontColor: Colors.white,
-                          titleFactor: 0.4,
-                          subTitleFactor: 0.2,
-                        ),
-                        CircleName(
-                          name: "Dhanush",
-                          radiusFactor: 0.1,
-                          backgroundColor: Colors.blue,
-                          fontColor: Colors.white,
-                          titleFactor: 0.4,
-                          subTitleFactor: 0.2,
-                        ),
-                        CircleName(
-                          name: "Dhanush",
-                          radiusFactor: 0.1,
-                          backgroundColor: Colors.blue,
-                          fontColor: Colors.white,
-                          titleFactor: 0.4,
-                          subTitleFactor: 0.2,
-                        ),
-                      ],
-                    ),
+                  const Flexible(
+                    flex: 2,
+                    child: Box(),
                   ),
                   Flexible(
                     flex: 8,
@@ -153,54 +139,12 @@ class DashboardState extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           ...[
-                            WelcomeName(),
-                            Spacer(),
+                            const WelcomeName(),
+                            const Spacer(),
                           ],
                           ...List.from(
                             ["Play Single", "Play Multiplayer", "Settings"].map(
-                              (e) => Flexible(
-                                child: FadeInLeft(
-                                  child: TextButton(
-                                    onPressed: () {
-                                      if (e.contains("Single")) {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            content: FractionallySizedBox(
-                                              heightFactor: 0.2,
-                                              child: Container(),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      if (e.contains("Multiplayer")) {
-                                        showModalBottomSheet(
-                                          context: context,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                size.width,
-                                              ),
-                                              topRight: Radius.circular(
-                                                size.width * 0.01,
-                                              ),
-                                            ),
-                                          ),
-                                          builder: (_) =>
-                                              const CreateJoinRoom(),
-                                        );
-                                      }
-                                    },
-                                    child: Text(
-                                      e,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: size.width * 0.07,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              (e) => DashboardButton(name: e),
                             ),
                           ),
                           ...[
@@ -232,6 +176,54 @@ class DashboardState extends ConsumerWidget {
   }
 }
 
+class DashboardButton extends StatelessWidget {
+  final String name;
+  const DashboardButton({Key? key, required this.name}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return Flexible(
+      child: FadeInLeft(
+        child: TextButton(
+          onPressed: () {
+            switch (name) {
+              case "Play Single":
+                {}
+                break;
+              case "Play Multiplayer":
+                showModalBottomSheet(
+                  context: context,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(
+                        size.width,
+                      ),
+                      topRight: Radius.circular(
+                        size.width * 0.01,
+                      ),
+                    ),
+                  ),
+                  builder: (context) => const CreateJoinRoom(),
+                );
+                break;
+              case "Settings":
+                break;
+            }
+          },
+          child: Text(
+            name,
+            style: GoogleFonts.poppins(
+              fontSize: size.width * 0.07,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class WelcomeName extends ConsumerWidget {
   const WelcomeName({Key? key}) : super(key: key);
 
@@ -248,19 +240,13 @@ class WelcomeName extends ConsumerWidget {
                 TextSpan(
                   text: "Welcome ",
                   children: [
-                    TextSpan(
-                      text: camelCase(user.name),
-                      style: TextStyle(
-                        fontSize: size.width * 0.07,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54,
-                      ),
-                    ),
+                    TextSpan(text: camelCase(user.name)),
+                    TextSpan(text: "!"),
                   ],
                 ),
-                style: TextStyle(
-                  fontSize: size.width * 0.05,
-                  color: Colors.black45,
+                style: GoogleFonts.luckiestGuy(
+                  fontSize: size.width * 0.075,
+                  color: Colors.black54,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -283,24 +269,20 @@ class CreateJoinRoom extends ConsumerWidget {
         children: List.from(
           ["CREATE GAME", "JOIN GAME"].map(
             (e) => TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                if (e.contains("CREATE")) {
-                  /*ref.watch(createRoomProvider).whenData((value) {
-                    print("290--$value");
-                    ref.watch(idNotifierProvider.notifier).state = value;
-                    context.router.push(GameRoomRoute(isCreator: true));
-                    ref.watch(joinRoomProvider);
-                  });*/
-                  ref.watch(createRoomProvider.future).then(
-                    (value) {
-                      ref.watch(idNotifierProvider.notifier).state = value;
-                      context.router.push(GameRoomRoute(isCreator: true));
-                    },
-                  ).whenComplete(
-                    () => ref.watch(joinRoomProvider),
-                  );
-                } else {}
+              onPressed: () async {
+                switch (e) {
+                  case "CREATE GAME":
+                    ref.read(createRoomProvider).then(
+                      (value) {
+                        ref.read(idNotifierProvider.notifier).state = value;
+                        context.router.push(GameRoomRoute(isCreator: true));
+                      },
+                    ).whenComplete(() => ref.watch(joinRoomProvider));
+                    break;
+                  case "JOIN GAME":
+                    break;
+                }
+                //context.router.push(GameRoomRoute(isCreator: true));
               },
               child: Text(
                 e,
@@ -314,6 +296,7 @@ class CreateJoinRoom extends ConsumerWidget {
         ),
         alignment: WrapSuperAlignment.right,
         wrapFit: WrapFit.min,
+        spacing: size.width * 0.1,
       ),
     );
   }
